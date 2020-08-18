@@ -32,7 +32,10 @@ string getPath(){
         if(pathWithExe[i] == '/'){
           path = pathWithExe.substr(0,i);
           return path;
+<<<<<<< HEAD
           
+=======
+>>>>>>> 976daeec7ddcf93fa49d92d31a630ff2a4e66669
         }
 
     }
