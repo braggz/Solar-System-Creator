@@ -12,37 +12,51 @@ vector<string> systems;
 void systemWriter(vector<string> v);
 
 void createNewSystem(){
+  bool b;
   cout << "Please enter system name\n";
   cout << "System Name: ";
   string systemName;
   cin >> systemName;
+  while(systemName.size() > 20){
+    cout << "Please keep system names below 20 characters\n";
+    cout << "Press 'b' to go back to main menu\n";
+    cout << "System Name: ";
+    cin >> systemName;
+    if(systemName == "b")
+      b = true;
+  }
   fstream f;
 
-  f.open(systemFile.c_str(), fstream::app);
-  if(!f.is_open())
-    wcerr << "Could not open the systems file\n";
-  f.close();
   f.open(systemFile.c_str(), fstream::in);
   string lines;
   while(getline(f,lines,',')){
     systems.push_back(lines);
   }
   f.close();
+
+
   while(!checkDuplicate(systemName,systems)){
     cout << "There is already a system with that name, please try again\n";
+    cout << "Press 'b' to go back to main menu\n";
+    cout << "System Name: ";
     cin >> systemName;
+    if(systemName == "b")
+      b = true;
   }
-  systems.push_back(systemName);
-  systemWriter(systems);
-  systems.clear();
 
-  string pathName = getPath();
-  pathName = pathName + "/systems/" + systemName;
+  if(!b){
+    systems.push_back(systemName);
+    systemWriter(systems);
+    systems.clear();
+    string pathName = getPath();
 
-
-  if(mkdir(pathName.c_str(),0777) == -1){
-    cout << "dsfsdf";
+    pathName = pathName + "/systems/" + systemName;
+    if(mkdir(pathName.c_str(),0777) == -1){
+      wcerr << "Could not create folder" ;
+    }
   }
+  b = false;
+
 }
 
 //gets the path to the exe and removes the exe name
