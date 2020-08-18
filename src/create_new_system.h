@@ -2,14 +2,40 @@
 #include <string>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <fstream>
+#include <vector>
 using namespace std;
 string getPath();
+bool checkDuplicate(string s, vector<string> v);
+const string systemFile = "./systems/systems";
+vector<string> systems;
+void systemWriter(vector<string> v);
 
 void createNewSystem(){
   cout << "Please enter system name\n";
   cout << "System Name: ";
   string systemName;
   cin >> systemName;
+  fstream f;
+
+  f.open(systemFile.c_str(), fstream::app);
+  if(!f.is_open())
+    wcerr << "Could not open the systems file\n";
+  f.close();
+  f.open(systemFile.c_str(), fstream::in);
+  string lines;
+  while(getline(f,lines,',')){
+    systems.push_back(lines);
+  }
+  f.close();
+  while(!checkDuplicate(systemName,systems)){
+    cout << "There is already a system with that name, please try again\n";
+    cin >> systemName;
+  }
+  systems.push_back(systemName);
+  systemWriter(systems);
+  systems.clear();
+
   string pathName = getPath();
   pathName = pathName + "/systems/" + systemName;
 
@@ -32,10 +58,6 @@ string getPath(){
         if(pathWithExe[i] == '/'){
           path = pathWithExe.substr(0,i);
           return path;
-<<<<<<< HEAD
-          
-=======
->>>>>>> 976daeec7ddcf93fa49d92d31a630ff2a4e66669
         }
 
     }
@@ -45,3 +67,22 @@ string getPath(){
   return "";
 
 };
+
+bool checkDuplicate(string s, vector<string> v){
+  for(int i = 0; i < v.size(); i++){
+    if(v[i] == s){
+      return false;
+    }
+  }
+  return true;
+}
+
+void systemWriter(vector<string> v){
+  fstream f;
+  f.open(systemFile.c_str(), fstream::out);
+  for(int i =0; i < v.size(); i++){
+    f << v[i] << ',';
+  }
+  f.close();
+
+}

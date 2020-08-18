@@ -11,7 +11,7 @@ int main(){
   while(input != 'e'){
     cout << "Welcome to Solar System Creator!\n\n";
     cout << "Type 'c' to create a new system\n";
-    cout << "Type 'e' to quit\n";
+    cout << "Type 'e' to exit\n";
     cin >> input;
 
     switch(input){
