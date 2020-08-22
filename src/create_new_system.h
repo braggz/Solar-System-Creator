@@ -11,35 +11,45 @@ const string systemFile = "./systems/systems";
 vector<string> systems;
 void systemWriter(vector<string> v);
 
+
 void createNewSystem(){
-  bool b;
-  cout << "Please enter system name\n";
+  bool b = false;
+  cout << "Please enter system name (No spaces allowed!)\n";
   cout << "System Name: ";
   string systemName;
   cin >> systemName;
+  cin.ignore(10000,'\n');;
+
+  if(systemName == "b"){
+    b = true;
+  }
   while(systemName.size() > 20){
     cout << "Please keep system names below 20 characters\n";
     cout << "Press 'b' to go back to main menu\n";
     cout << "System Name: ";
     cin >> systemName;
+    cin.ignore(10000,'\n');;
     if(systemName == "b")
       b = true;
   }
-  fstream f;
+  if(!b){
+    fstream f;
 
-  f.open(systemFile.c_str(), fstream::in);
-  string lines;
-  while(getline(f,lines,',')){
-    systems.push_back(lines);
+    f.open(systemFile.c_str(), fstream::in);
+    string lines;
+    while(getline(f,lines,',')){
+      systems.push_back(lines);
+    }
+    f.close();
   }
-  f.close();
 
 
-  while(!checkDuplicate(systemName,systems)){
+  while(!checkDuplicate(systemName,systems) && !b){
     cout << "There is already a system with that name, please try again\n";
     cout << "Press 'b' to go back to main menu\n";
     cout << "System Name: ";
     cin >> systemName;
+    cin.ignore(10000,'\n');;
     if(systemName == "b")
       b = true;
   }
@@ -55,7 +65,15 @@ void createNewSystem(){
       wcerr << "Could not create folder" ;
     }
   }
-  b = false;
+
+if(!b){
+  cout << "Press 'c' to build the system or any other key to skip this step\n";
+  cin >> systemName;
+  cin.ignore(10000,'\n');;
+  if(systemName == "c"){
+    cout << "Do this\n";
+  }
+}
 
 }
 

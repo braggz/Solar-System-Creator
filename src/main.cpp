@@ -17,6 +17,7 @@ int main(){
     cout << "Type 'e' to exit\n";
     cout << "Type 'l' to load a system\n";
     cin >> input;
+    cin.ignore(10000,'\n');
 
     switch(input){
       case 'c':
