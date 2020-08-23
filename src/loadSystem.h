@@ -36,6 +36,7 @@ void loadSystem(){
 if(!b){
   cin >> selectionInput1;
   cin >> selectionInput2;
+  cin.ignore(10000,'\n');
   while(stoi(selectionInput1) > systems.size() || selectionInput2.size() !=1){
     if(stoi(selectionInput1) > systems.size())
       cout << "That systen does not exist please try again\n";
@@ -43,7 +44,7 @@ if(!b){
       cout << "Please only enter one operation at a time, please try again\n";
     cin >> selectionInput1;
     cin >> selectionInput2;
-    cout << selectionInput1 << " " <<selectionInput2 <<endl;
+
     cin.ignore(10000,'\n');
   }
 

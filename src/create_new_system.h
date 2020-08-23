@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <fstream>
 #include <vector>
+#include "systemCreator.h"
 using namespace std;
 string getPath();
 bool checkDuplicate(string s, vector<string> v);
@@ -71,7 +72,7 @@ if(!b){
   cin >> systemName;
   cin.ignore(10000,'\n');;
   if(systemName == "c"){
-    cout << "Do this\n";
+    systemCreator();
   }
 }
 
