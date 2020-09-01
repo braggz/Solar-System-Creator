@@ -17,20 +17,20 @@ void createNewSystem(){
   bool b = false;
   cout << "Please enter system name (No spaces allowed!)\n";
   cout << "System Name: ";
-  string systemName;
-  cin >> systemName;
+  string input;
+  cin >> input;
   cin.ignore(10000,'\n');;
 
-  if(systemName == "b"){
+  if(input == "b"){
     b = true;
   }
-  while(systemName.size() > 20){
+  while(input.size() > 20){
     cout << "Please keep system names below 20 characters\n";
     cout << "Press 'b' to go back to main menu\n";
     cout << "System Name: ";
-    cin >> systemName;
+    cin >> input;
     cin.ignore(10000,'\n');;
-    if(systemName == "b")
+    if(input == "b")
       b = true;
   }
   if(!b){
@@ -45,23 +45,24 @@ void createNewSystem(){
   }
 
 
-  while(!checkDuplicate(systemName,systems) && !b){
+  while(!checkDuplicate(input,systems) && !b){
     cout << "There is already a system with that name, please try again\n";
     cout << "Press 'b' to go back to main menu\n";
     cout << "System Name: ";
-    cin >> systemName;
+    cin >> input;
     cin.ignore(10000,'\n');;
-    if(systemName == "b")
+    if(input == "b")
       b = true;
   }
-
+  string systemName;
   if(!b){
-    systems.push_back(systemName);
+    systemName = input;
+    systems.push_back(input);
     systemWriter(systems);
     systems.clear();
     string pathName = getPath();
 
-    pathName = pathName + "/systems/" + systemName;
+    pathName = pathName + "/systems/" + input;
     if(mkdir(pathName.c_str(),0777) == -1){
       wcerr << "Could not create folder" ;
     }
@@ -69,10 +70,10 @@ void createNewSystem(){
 
 if(!b){
   cout << "Press 'c' to build the system or any other key to skip this step\n";
-  cin >> systemName;
+  cin >> input;
   cin.ignore(10000,'\n');;
-  if(systemName == "c"){
-    systemCreator();
+  if(input == "c"){
+    systemCreator(systemName);
   }
 }
 
