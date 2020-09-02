@@ -36,7 +36,7 @@ void systemWriter(Center c){
         cout << "Writting Moon "<< c.orbiters[i].orbiters[j].name <<endl;
         extension = "./systems/"+c.systemName + "/" +c.orbiters[i].name;
         f.open(extension.c_str(), fstream::app);
-        f << "Moon "<<j<<":"<<c.orbiters[i].orbiters[j].name;
+        f << "Moon "<<j<<":"<<c.orbiters[i].orbiters[j].name<<endl;
         f.close();
         extension = "./systems/"+c.systemName + "/" +c.orbiters[i].orbiters[j].name;
         f.open(extension.c_str(), fstream::out);

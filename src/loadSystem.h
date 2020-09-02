@@ -4,9 +4,10 @@
 #include <string>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "systemReader.h"
 using namespace std;
 void systemDeleter(string s,int i);
-
+Center systemReader(string s);
 void loadSystem(){
 
   fstream f;
@@ -54,11 +55,16 @@ if(!b){
     selection = systems[(stoi(selectionInput1)-1)];
     systemDeleter(selection,(stoi(selectionInput1)-1));
   }
+  else if(selectionInput2 == "l"){
+    string selection;
+    selection = systems[(stoi(selectionInput1)-1)];
+    systemReader(selection);
+  }
 }
 
   systems.clear();
 }
-
+//Need to work on this so it does not need to loop through to find the system, use i
 void systemDeleter(string s, int i){
   for(int j =0; j < systems.size();j++){
     if(systems[j] == s){

@@ -4,11 +4,12 @@
 using namespace std;
 
 int main(){
-
+  for(int i =0; i < 20 ; i++)
+    cout << endl;
   char input;
   while(input != 'e'){
     //Clear Screen
-    for(int i =0; i < 20 ; i++)
+    for(int i =0; i < 4 ; i++)
       cout << endl;
       cout << "Welcome to Solar System Creator!\n\n";
       cout<< "---------------------------------------------\n";

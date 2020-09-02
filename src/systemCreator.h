@@ -1,7 +1,7 @@
 /*
 TO DO: I need to parse the input of these responses to prevernt errors!
-
-
+Rewrite prompts to be more Clear
+Determine what units i am going to use (Probaby AU or KM)
 */
 #include <iostream>
 #include <string>
