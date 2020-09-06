@@ -16,13 +16,14 @@ Center systemReader(string s){
   cout << "Loading Center\n";
   while(getline(f,lines)){
     readCenter.push_back(parseLines(lines));
+    cout << parseLines(lines) << endl;
   }
   f.close();
   c.loadReadInput(readCenter);
   cout << "Center Loaded\n";
   for(int i =4;i<readCenter.size();i++){
     Planet p;
-    extension = extension = "./systems/"+ s + "/" + readCenter[i];
+    extension = "./systems/"+ s + "/" + readCenter[i];
     cout << "Loading "<<readCenter[i]<<endl;
     f.open(extension.c_str(), fstream::in);
     while(getline(f, lines)){
@@ -31,27 +32,30 @@ Center systemReader(string s){
     f.close();
     p.loadReadInput(readPlanets);
 
-    for(int j =4;j<readPlanets.size();j++){
+    for(int j =5;j<readPlanets.size();j++){
       cout << "Loading "<<readCenter[i] <<"'s Moon, "<<readPlanets[j]<<endl;
       Moon m;
-      extension = extension = "./systems/"+ s + "/" + readPlanets[j];
+      extension = "./systems/"+ s + "/" + readPlanets[j];
       f.open(extension.c_str(), fstream::in);
       while(getline(f, lines)){
         readMoons.push_back(parseLines(lines));
+        //cout << parseLines(lines)<<endl;
       }
       f.close();
       m.loadReadInput(readMoons);
+      readMoons.clear();
       p.orbiters.push_back(m);
-      cout << readPlanets[j] <<" Loaded\n";
 
     }
     c.orbiters.push_back(p);
     cout << readCenter[i] << " Loaded\n";
     readPlanets.clear();
-    readMoons.clear();
+
 
 
   }
+
+
   cout << "System Loaded!\n";
   return c;
 }

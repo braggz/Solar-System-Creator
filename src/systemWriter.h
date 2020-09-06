@@ -29,7 +29,8 @@ void systemWriter(Center c){
       f << "Body Name:"<<c.orbiters[i].name <<endl;
       f << "Body Mass:"<<c.orbiters[i].mass <<endl;
       f << "Body Diameter:"<<c.orbiters[i].diameter <<endl;
-      f << "Distance From Orbital Body:"<<c.orbiters[i].distanceFromCenter <<endl;
+      f << "Apoapsis:"<<c.orbiters[i].apoapsis <<endl;
+      f << "Periapsis:"<<c.orbiters[i].periapsis <<endl;
       f.close();
       cout << "c size "<<c.orbiters[i].orbiters.size()<<endl;
       for(int j =0; j< c.orbiters[i].orbiters.size(); j++){
@@ -43,7 +44,8 @@ void systemWriter(Center c){
         f << "Body Name:"<<c.orbiters[i].orbiters[j].name <<endl;
         f << "Body Mass:"<<c.orbiters[i].orbiters[j].mass <<endl;
         f << "Body Diameter:"<<c.orbiters[i].orbiters[j].diameter <<endl;
-        f << "Distance From Orbital Body:"<<c.orbiters[i].orbiters[j].distanceFromCenter <<endl;
+        f << "Apoapsis:"<<c.orbiters[i].orbiters[j].apoapsis <<endl;
+        f << "Periapsis:"<<c.orbiters[i].periapsis <<endl;
         f.close();
         cout << "Moon "<< c.orbiters[i].orbiters[j].name <<" Written"<<endl;
         }

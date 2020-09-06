@@ -5,12 +5,13 @@ using namespace std;
 class Moon{
   public:
     string name;
-    double mass,diameter,distanceFromCenter;
+    double mass,diameter,periapsis,apoapsis;
     void loadReadInput(vector <string> input){
       name = input[0];
       mass = stod(input[1]);
       diameter = stod(input[2]);
-      distanceFromCenter = stod(input[3]);
+      apoapsis = stod(input[3]);
+      periapsis = stod(input[4]);
 
     }
 };
@@ -18,16 +19,18 @@ class Moon{
 class Planet{
   public:
     string name;
-    double mass,diameter,distanceFromCenter;
+    double mass,diameter,periapsis,apoapsis;
     vector<Moon> orbiters;
 
     void loadReadInput(vector <string> input){
       name = input[0];
       mass = stod(input[1]);
       diameter = stod(input[2]);
-      distanceFromCenter = stod(input[3]);
+      apoapsis = stod(input[3]);
+      periapsis = stod(input[4]);
 
     }
+
 };
 
 class Center{
@@ -44,4 +47,57 @@ class Center{
       diameter = stod(input[3]);
 
     }
+    void printSystem(){
+      cout << "System Name: " << systemName <<endl;
+      cout << "   Central Object Name: " << name <<endl;
+      for(int i = 0; i < orbiters.size(); i++){
+        cout << "       Planet Name: " << orbiters[i].name <<endl;
+        for(int j=0; j < orbiters[i].orbiters.size(); j++){
+          cout << "           Moon Name: " << orbiters[i].orbiters[j].name << endl;
+        }
+      }
+    }
+    void printSystemTextArt(){
+
+      int size = (name.size()/2)+2;
+      for(int i =0; i < size;i++)
+        cout <<" ";
+
+      cout << "0";
+      for(int i =0; i < size;i++)
+        cout <<"-";
+
+      for(int i =0; i < orbiters.size();i++){
+        size = (orbiters[i].name.size()/2)+2;
+        if(i == orbiters.size()-1)
+          cout << "o";
+        else{
+          cout <<"o";
+          for(int j =0; j < size;j++){
+            cout << "-";
+          }
+        }
+
+      }
+      cout << endl;
+
+  }
+
+  vector<Planet> sortByLowestDistance(vector<Planet> p){
+    vector<Planet> sorted;
+    Planet temp;
+    for(int i =0; i<p.size();i++){
+      double adverageDist = (p[i].apoapsis+p[i].periapsis)/2;
+      for(int j =i;j<p.size();j++){
+        if(adverageDist > (p[j].apoapsis+p[j].periapsis)/2){
+          temp = p[j];
+          p[j] = p[i];
+          p[i] = temp;
+        }
+      }
+    }
+    return p;
+
+  }
+
 };

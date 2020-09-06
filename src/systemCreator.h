@@ -42,8 +42,11 @@ void systemCreator(string s){
     cout << "What is the diameter of this body ?\n";
     cin >> planet.diameter;
     cin.ignore(10000,'\n');
-    cout << "How far is this planet from the central object of your system\n";
-    cin >> planet.distanceFromCenter;
+    cout << "What is the periapsis of this body?\n";
+    cin >> planet.periapsis;
+    cin.ignore(10000,'\n');
+    cout << "What is the apoapsis of this body?\n";
+    cin >> planet.apoapsis;
     cin.ignore(10000,'\n');
     cout << "Do you want to add moons to this planet? y/n\n";
     cin >> input;
@@ -73,8 +76,11 @@ Planet createMoons(Planet p){
       cout << "What is the diameter of the moon?\n";
       cin >> moon.diameter;
       cin.ignore(10000,'\n');
-      cout << "How far is this moon from the planet?\n";
-      cin >> moon.distanceFromCenter;
+      cout << "What is the periapsis of this body?\n";
+      cin >> moon.periapsis;
+      cin.ignore(10000,'\n');
+      cout << "What is the apoapsis of this body?\n";
+      cin >> moon.apoapsis;
       cin.ignore(10000,'\n');
       cout << "Do you want to add another moon? y/n\n";
       //string input;
