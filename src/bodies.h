@@ -59,7 +59,7 @@ class Center{
     }
     void printSystemTextArt(){
 
-      int size = (name.size()/2)+2;
+      int size = (name.size()/2)+6;
       for(int i =0; i < size;i++)
         cout <<" ";
 
@@ -68,9 +68,12 @@ class Center{
         cout <<"-";
 
       for(int i =0; i < orbiters.size();i++){
-        size = (orbiters[i].name.size()/2)+2;
-        if(i == orbiters.size()-1)
+        size = (orbiters[i].name.size()/2)+6;
+        if(i == orbiters.size()-1){
+          for(int j =0; j < size;j++)
+            cout << "-";
           cout << "o";
+        }
         else{
           cout <<"o";
           for(int j =0; j < size;j++){
@@ -80,6 +83,54 @@ class Center{
 
       }
       cout << endl;
+       size = (name.size()/2)+6;
+      for(int i =0; i < size;i++)
+        cout <<" ";
+
+      cout << "^";
+      for(int i =0; i < size;i++)
+        cout <<" ";
+
+      for(int i =0; i < orbiters.size();i++){
+        size = (orbiters[i].name.size()/2)+6;
+        if(i == orbiters.size()-1){
+          for(int j =0; j < size;j++)
+            cout << " ";
+          cout << "^";
+        }
+        else{
+          cout <<"^";
+          for(int j =0; j < size;j++){
+            cout << " ";
+          }
+        }
+
+      }
+      cout << endl;
+      size = (name.size()/2)+3;
+     for(int i =0; i < size;i++)
+       cout <<" ";
+
+     cout << name;
+     for(int i =0; i < size;i++)
+       cout <<" ";
+
+     for(int i =0; i < orbiters.size();i++){
+       size = (orbiters[i].name.size()/2)+3;
+       if(i == orbiters.size()-1){
+         for(int j =0; j < size;j++)
+           cout << " ";
+         cout << orbiters[i].name;
+       }
+       else{
+         cout <<orbiters[i].name;
+         for(int j =0; j < size;j++){
+           cout << " ";
+         }
+       }
+
+     }
+     cout << endl;
 
   }
 
