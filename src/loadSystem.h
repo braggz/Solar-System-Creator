@@ -5,9 +5,12 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "systemReader.h"
+#include "editSystem.h"
+
 using namespace std;
 void systemDeleter(string s,int i);
 Center systemReader(string s);
+void editSystem(Center c);
 void loadSystem(){
 
   fstream f;
@@ -40,7 +43,7 @@ if(!b){
   cin.ignore(10000,'\n');
   while(stoi(selectionInput1) > systems.size() || selectionInput2.size() !=1){
     if(stoi(selectionInput1) > systems.size())
-      cout << "That systen does not exist please try again\n";
+      cout << "That system does not exist please try again\n";
     else
       cout << "Please only enter one operation at a time, please try again\n";
     cin >> selectionInput1;
@@ -59,12 +62,18 @@ if(!b){
     string selection;
     selection = systems[(stoi(selectionInput1)-1)];
     Center c = systemReader(selection);
-
     c.orbiters = c.sortByLowestDistance(c.orbiters);
     c.printSystem();
-    
     c.printSystemTextArt();
+
     // cout << c.orbiters[2].orbiters[3].name<<endl;
+  }
+  else if(selectionInput2 == "e"){
+    string selection;
+    selection = systems[(stoi(selectionInput1)-1)];
+    Center c = systemReader(selection);
+    editSystem(c);
+
   }
 }
 
