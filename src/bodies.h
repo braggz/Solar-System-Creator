@@ -151,4 +151,15 @@ class Center{
 
   }
 
+  Planet findPlanet(string bodyName){
+    Planet p;
+    for(int i =0; i <orbiters.size();i++){
+      if(bodyName == orbiters[i].name){
+        return orbiters[i];
+      }
+
+    }
+    return p;
+  }
+
 };
