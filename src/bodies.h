@@ -14,6 +14,7 @@ class Moon{
       periapsis = stod(input[4]);
 
     }
+    
 };
 
 class Planet{
@@ -30,6 +31,8 @@ class Planet{
       periapsis = stod(input[4]);
 
     }
+
+
 
 };
 
@@ -160,6 +163,17 @@ class Center{
 
     }
     return p;
+  }
+  Moon findMoon(string bodyName){
+    Moon m;
+    for(int i =0; i < orbiters.size(); i++){
+      for(int j =0; j < orbiters[i].orbiters.size();j++){
+        if(bodyName == orbiters[i].orbiters[j].name){
+          return orbiters[i].orbiters[j];
+        }
+      }
+    }
+    return m;
   }
 
 };

@@ -63,8 +63,10 @@ if(!b){
     selection = systems[(stoi(selectionInput1)-1)];
     Center c = systemReader(selection);
     c.orbiters = c.sortByLowestDistance(c.orbiters);
+    systems.clear();
     c.printSystem();
     c.printSystemTextArt();
+
 
     // cout << c.orbiters[2].orbiters[3].name<<endl;
   }
@@ -72,6 +74,7 @@ if(!b){
     string selection;
     selection = systems[(stoi(selectionInput1)-1)];
     Center c = systemReader(selection);
+    systems.clear();
     editSystem(c);
 
   }
