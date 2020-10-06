@@ -14,7 +14,7 @@ class Moon{
       periapsis = stod(input[4]);
 
     }
-    
+
 };
 
 class Planet{
@@ -164,6 +164,16 @@ class Center{
     }
     return p;
   }
+  int findPlanetIndex(string bodyName){
+
+    for(int i =0; i <orbiters.size();i++){
+      if(bodyName == orbiters[i].name){
+        return i;
+      }
+
+    }
+    return -1;
+  }
   Moon findMoon(string bodyName){
     Moon m;
     for(int i =0; i < orbiters.size(); i++){
@@ -174,6 +184,18 @@ class Center{
       }
     }
     return m;
+  }
+  vector<int> findMoonIndex(string bodyName){
+    vector<int> index;
+    for(int i =0; i < orbiters.size(); i++){
+      for(int j =0; j < orbiters[i].orbiters.size();j++){
+        if(bodyName == orbiters[i].orbiters[j].name){
+          index.push_back(i);
+          index.push_back(j);
+        }
+      }
+    }
+    return index;
   }
 
 };
