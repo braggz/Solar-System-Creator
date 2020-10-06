@@ -4,9 +4,9 @@
 
 using namespace std;
 Center planetDeleter(Center c, string bodyName);
-void focusView(Center c, string body);
+void focusView(Center *c, string body);
 void loadSystem();
-void commandParser(Center c, string objectValue, string command, string objectName);
+void commandParser(Center *c, string objectValue, string command, string objectName);
 
 void editSystem(Center c){
   string input;
@@ -14,7 +14,7 @@ void editSystem(Center c){
 
   while (input != "b"){
     //Refresh System Information
-    c = systemReader(c.systemName);
+    //c = systemReader(c.systemName);
     c.orbiters = c.sortByLowestDistance(c.orbiters);
     c.printSystem();
     c.printSystemTextArt();
@@ -34,7 +34,7 @@ void editSystem(Center c){
       systemWriter(c);
 }
     if(input == "focus")
-      focusView(c, bodyName);
+      focusView(&c, bodyName);
     }
 
 
@@ -77,28 +77,28 @@ Center planetDeleter(Center c, string bodyName){
   return c;
 }
 
-void focusView(Center c, string bodyName){
+void focusView(Center *c, string bodyName){
 
   Planet p;
   Moon m;
-  p = c.findPlanet(bodyName);
-  m = c.findMoon(bodyName);
+  p = c->findPlanet(bodyName);
+  m = c->findMoon(bodyName);
 
 
-  if(bodyName == c.name){
+  if(bodyName == c->name){
     bool b = true;
     string command, object;
 
 
-      cout << "\n\nCentral Body Name: " << c.name << endl;
-      cout << "Mass: " << c.mass <<endl;
-      cout << "Diameter: " <<c.diameter <<endl;
+      cout << "\n\nCentral Body Name: " << c->name << endl;
+      cout << "Mass: " << c->mass <<endl;
+      cout << "Diameter: " <<c->diameter <<endl;
       cout << "Orbiters: ";
-      for(int i =0; i < c.orbiters.size() ; i++){
-        if(i == c.orbiters.size()-1)
-          cout << c.orbiters[i].name << ".";
+      for(int i =0; i < c->orbiters.size() ; i++){
+        if(i == c->orbiters.size()-1)
+          cout << c->orbiters[i].name << ".";
         else
-          cout << c.orbiters[i].name <<", ";
+          cout << c->orbiters[i].name <<", ";
 
       }
       cout <<endl;
@@ -111,7 +111,7 @@ void focusView(Center c, string bodyName){
 
 
 
-      commandParser(c,object,command,c.name);
+      commandParser(c,object,command,c->name);
 
 
 
@@ -178,15 +178,15 @@ void focusView(Center c, string bodyName){
   }
 }
 
-void commandParser(Center c, string objectValue, string command, string objectName){
+void commandParser(Center *c, string objectValue, string command, string objectName){
 
   if(command == "focus"){
     focusView(c,objectValue);
   }
   else if(command == "apoapsis"){
-    int planetIndex = c.findPlanetIndex(objectName);
-    vector<int> moonIndex = c.findMoonIndex(objectName);
-    if(objectName == c.name){
+    int planetIndex = c->findPlanetIndex(objectName);
+    vector<int> moonIndex = c->findMoonIndex(objectName);
+    if(objectName == c->name){
       cout << "Your central body does not have an apoapsis.\n";
       cout << "Press enter to continue.\n";
       string pause;
@@ -196,14 +196,14 @@ void commandParser(Center c, string objectValue, string command, string objectNa
     }
 
     else if(planetIndex != -1){
-      c.orbiters[planetIndex].apoapsis = stod(objectValue);
-      systemWriter(c);
+      c->orbiters[planetIndex].apoapsis = stod(objectValue);
+      systemWriter(*c);
       focusView(c,objectName);
     }
 
     else if(moonIndex.size()>0){
-      c.orbiters[moonIndex[0]].orbiters[moonIndex[1]].apoapsis = stod(objectValue);
-      systemWriter(c);
+      c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].apoapsis = stod(objectValue);
+      systemWriter(*c);
       focusView(c,objectName);
     }
 
