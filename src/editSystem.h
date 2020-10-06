@@ -6,9 +6,8 @@ using namespace std;
 Center planetDeleter(Center c, string bodyName);
 void focusView(Center c, string body);
 void loadSystem();
+void commandParser(Center c, string objectValue, string command);
 void editSystem(Center c){
-
-
   string input;
   string bodyName;
   c.orbiters = c.sortByLowestDistance(c.orbiters);
@@ -23,7 +22,7 @@ void editSystem(Center c){
     cout << "Enter b to go back\n";
 
     cin >> input;
-    if(input == "b")
+    if(input != "b")
       cin >> bodyName;
     cin.ignore(10000,'\n');
     if(input == "delete")
@@ -74,13 +73,17 @@ Center planetDeleter(Center c, string bodyName){
 }
 
 void focusView(Center c, string bodyName){
+bool b = true;
   Planet p;
   Moon m;
   p = c.findPlanet(bodyName);
   m = c.findMoon(bodyName);
+
+
   if(bodyName == c.name){
+    bool b = true;
     string command, object;
-    while(command != "b"){
+    while(b){
 
       cout << "\n\nCentral Body Name: " << c.name << endl;
       cout << "Mass: " << c.mass <<endl;
@@ -100,12 +103,16 @@ void focusView(Center c, string bodyName){
       cin >> command;
       if(command != "b")
         cin >> object;
+
+      b = false;
+      commandParser(c,object,command);
+
   }
 
   }
   else if(p.name.size() > 0){
     string command, object;
-    while(command != "b"){
+    while(b){
 
       cout << "\n\nPlanet Name: " << p.name << endl;
       cout << "Mass: " << p.mass <<endl;
@@ -126,15 +133,19 @@ void focusView(Center c, string bodyName){
       cin >> command;
       if(command != "b")
         cin >> object;
+
+      b = false;
+      commandParser(c,object,command);
+
   }
 
   }
   //need to make sure people cant name moons and planets the same name!
   else if(m.name.size() > 0){
     string command, object;
-    while(command != "b"){
+    while(b){
 
-      cout << "\n\nCentral Body Name: " << m.name << endl;
+      cout << "\n\nMoon Name: " << m.name << endl;
       cout << "Mass: " << m.mass <<endl;
       cout << "Diameter: " <<m.diameter <<endl;
       cout << "Apoapsis: " <<m.apoapsis <<endl;
@@ -143,18 +154,29 @@ void focusView(Center c, string bodyName){
       cout << "To modify values type the value name followed by the new value (Ex: diamerter 10)\n";
       cout << "You can also focus on another planet from here\n";
       cin >> command;
-      if(command == "b")
+      if(command != "b")
         cin >> object;
-  }
+
+      b = false;
+
+      commandParser(c,object,command);
+
+    }
 
   }
   else{
     cout << "Planet or moon not found! Press any key to continue\n";
+    b = true;
     string pause;
     cin >> pause;
+  }
 }
 
+void commandParser(Center c, string objectValue, string command){
 
-
+  if(command == "focus"){
+    focusView(c,objectValue);
+  }
+  
 
 }

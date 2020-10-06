@@ -13,6 +13,7 @@ Center systemReader(string s);
 void editSystem(Center c);
 void loadSystem(){
 
+  cout << "Press b to go back to the main menu.\n";
   fstream f;
 
   f.open(systemFile.c_str(), fstream::in);
@@ -39,26 +40,31 @@ void loadSystem(){
   string selectionInput2;
 if(!b){
   cin >> selectionInput1;
-  cin >> selectionInput2;
-  cin.ignore(10000,'\n');
-  while(stoi(selectionInput1) > systems.size() || selectionInput2.size() !=1){
-    if(stoi(selectionInput1) > systems.size())
-      cout << "That system does not exist please try again\n";
-    else
-      cout << "Please only enter one operation at a time, please try again\n";
-    cin >> selectionInput1;
+  if(selectionInput1 != "b")
     cin >> selectionInput2;
+  cin.ignore(10000,'\n');
+  if(selectionInput1 !="b"){
+    while(stoi(selectionInput1) > systems.size() || selectionInput2.size() !=1){
+      if(stoi(selectionInput1) > systems.size())
+        cout << "That system does not exist please try again \n";
+      else
+        cout << "Please only enter one operation at a time, please try again or enter b to go back\n";
+      cin >> selectionInput1;
+      if(selectionInput1 != "b")
+        cin >> selectionInput2;
+      else
+        break;
 
-    cin.ignore(10000,'\n');
+      cin.ignore(10000,'\n');
+    }
   }
 
-
-  if(selectionInput2 == "d"){
+  if(selectionInput2 == "d" && selectionInput1 != "b"){
     string selection;
     selection = systems[(stoi(selectionInput1)-1)];
     systemDeleter(selection,(stoi(selectionInput1)-1));
   }
-  else if(selectionInput2 == "l"){
+  else if(selectionInput2 == "l" && selectionInput1 != "b"){
     string selection;
     selection = systems[(stoi(selectionInput1)-1)];
     Center c = systemReader(selection);
@@ -70,7 +76,7 @@ if(!b){
 
     // cout << c.orbiters[2].orbiters[3].name<<endl;
   }
-  else if(selectionInput2 == "e"){
+  else if(selectionInput2 == "e" && selectionInput1 != "b"){
     string selection;
     selection = systems[(stoi(selectionInput1)-1)];
     Center c = systemReader(selection);
