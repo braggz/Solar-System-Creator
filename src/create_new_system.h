@@ -68,14 +68,10 @@ void createNewSystem(){
     }
   }
 
-if(!b){
-  cout << "Press 'c' to build the system or any other key to skip this step\n";
-  cin >> input;
-  cin.ignore(10000,'\n');;
-  if(input == "c"){
-    systemCreator(systemName);
-  }
-}
+if(!b)
+  systemCreator(systemName);
+
+
 
 }
 

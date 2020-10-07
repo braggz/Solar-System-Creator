@@ -10,7 +10,7 @@
 using namespace std;
 void systemDeleter(string s,int i);
 Center systemReader(string s);
-void editSystem(Center c);
+void editSystem(Center *c);
 void loadSystem(){
 
   cout << "Press b to go back to the main menu.\n";
@@ -72,16 +72,13 @@ if(!b){
     systems.clear();
     c.printSystem();
     c.printSystemTextArt();
-
-
-    // cout << c.orbiters[2].orbiters[3].name<<endl;
   }
   else if(selectionInput2 == "e" && selectionInput1 != "b"){
     string selection;
     selection = systems[(stoi(selectionInput1)-1)];
     Center c = systemReader(selection);
     systems.clear();
-    editSystem(c);
+    editSystem(&c);
 
   }
 }

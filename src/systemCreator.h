@@ -7,8 +7,8 @@ Determine what units i am going to use (Probaby AU or KM)
 #include <string>
 #include "bodies.h"
 #include "systemWriter.h"
-Planet createMoons(Planet p);
-void systemWriter(Center c);
+void createMoons(Planet *p);
+void systemWriter(Center *c);
 using namespace std;
 //vector <Planet> planets;
 void systemCreator(string s){
@@ -53,17 +53,17 @@ void systemCreator(string s){
     cin.ignore(10000,'\n');
 
     if(input == "y"){
-      planet = createMoons(planet);
+      createMoons(&planet);
     }
     center.orbiters.push_back(planet);
     cout << "Add another planet? y/n\n";
     cin >> input;
     cin.ignore(10000,'\n');
   }
-  systemWriter(center);
+  systemWriter(&center);
 }
 
-Planet createMoons(Planet p){
+void createMoons(Planet *p){
     string input ="y";
     while(input == "y"){
       Moon moon;
@@ -86,8 +86,8 @@ Planet createMoons(Planet p){
       //string input;
       cin >> input;
       cin.ignore(10000,'\n');
-      p.orbiters.push_back(moon);
+      p->orbiters.push_back(moon);
   }
     //p.moonNames.push_back(moon.name);
-     return p;
+
 }
