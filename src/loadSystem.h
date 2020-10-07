@@ -6,14 +6,16 @@
 #include <unistd.h>
 #include "systemReader.h"
 #include "editSystem.h"
+#include "utilities.h"
 
 using namespace std;
 void systemDeleter(string s,int i);
 Center systemReader(string s);
 void editSystem(Center *c);
+bool isInt(string s);
 void loadSystem(){
 
-  cout << "Press b to go back to the main menu.\n";
+
   fstream f;
 
   f.open(systemFile.c_str(), fstream::in);
@@ -22,68 +24,73 @@ void loadSystem(){
     systems.push_back(lines);
   }
   f.close();
-  for(int i = 0; i < systems.size(); i++){
-    cout << i+1 <<". ";
-    cout << systems[i] << endl;
-  }
-  bool b = false;
-  if(systems.size() == 0){
-    cout << "No systems detected, please create one first!\n";
-    cout << "Press anykey to go back to the menu\n";
-    string noInput;
-    cin >> noInput;
+
+
+
+
+string command,value;
+
+if(systems.size() != 0){
+  while(command != "b"){
+    for(int i = 0; i < systems.size(); i++){
+      cout << i+1 <<". ";
+      cout << systems[i] << endl;
+    }
+    cout << "Enter b to go back to the main menu.\n";
+    cout << "Type help to view commands\n";
+    cin >> command;
+    if(command != "b")
+      cin >> value;
     cin.ignore(10000,'\n');
-    b = true;
-  }
-
-  string selectionInput1;
-  string selectionInput2;
-if(!b){
-  cin >> selectionInput1;
-  if(selectionInput1 != "b")
-    cin >> selectionInput2;
-  cin.ignore(10000,'\n');
-  if(selectionInput1 !="b"){
-    while(stoi(selectionInput1) > systems.size() || selectionInput2.size() !=1){
-      if(stoi(selectionInput1) > systems.size())
-        cout << "That system does not exist please try again \n";
-      else
-        cout << "Please only enter one operation at a time, please try again or enter b to go back\n";
-      cin >> selectionInput1;
-      if(selectionInput1 != "b")
-        cin >> selectionInput2;
-      else
-        break;
-
+    while(!isInt(value) && command !="b"){
+      cin >> command;
+      if(command != "b")
+        cin >> value;
       cin.ignore(10000,'\n');
     }
+    while(stoi(value) > systems.size() && command != "b" && !isInt(value)){
+      if(!isInt(value) && command !="b")
+        cout <<"That was not a number!\n";
+      else if(stoi(value) > systems.size() && command != "b")
+        cout << "That system does not exist please try again \nEnter b to go back to the menu.\n";
+      cin >> command;
+      if(command != "b")
+        cin >> value;
+      cin.ignore(10000,'\n');
+    }
+    if(command == "delete"){
+      string selection;
+      selection = systems[(stoi(value)-1)];
+      systemDeleter(selection,(stoi(value)-1));
+    }
+    else if(command == "load"){
+      string selection;
+      selection = systems[(stoi(value)-1)];
+      Center c = systemReader(selection);
+      c.orbiters = c.sortByLowestDistance(c.orbiters);
+      c.printSystem();
+      c.printSystemTextArt();
+    }
+    else if(command == "edit"){
+      string selection;
+      selection = systems[(stoi(value)-1)];
+      Center c = systemReader(selection);
+      editSystem(&c);
+    }
+    else if(command != "b"){
+      cout << "Command not recognized.\nPress Enter to continue.\n";
+      cin.ignore();
+    }
+
   }
 
-  if(selectionInput2 == "d" && selectionInput1 != "b"){
-    string selection;
-    selection = systems[(stoi(selectionInput1)-1)];
-    systemDeleter(selection,(stoi(selectionInput1)-1));
-  }
-  else if(selectionInput2 == "l" && selectionInput1 != "b"){
-    string selection;
-    selection = systems[(stoi(selectionInput1)-1)];
-    Center c = systemReader(selection);
-    c.orbiters = c.sortByLowestDistance(c.orbiters);
-    systems.clear();
-    c.printSystem();
-    c.printSystemTextArt();
-  }
-  else if(selectionInput2 == "e" && selectionInput1 != "b"){
-    string selection;
-    selection = systems[(stoi(selectionInput1)-1)];
-    Center c = systemReader(selection);
-    systems.clear();
-    editSystem(&c);
-
-  }
-}
-
-  systems.clear();
+ }
+ else{
+   cout << "No systems detected, please create one first!\n";
+   cout << "Press enter to go back to the menu\n";
+   cin.ignore();
+ }
+ systems.clear();
 }
 //Need to work on this so it does not need to loop through to find the system, use i
 void systemDeleter(string s, int i){

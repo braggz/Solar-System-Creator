@@ -70,9 +70,6 @@ void createNewSystem(){
 
 if(!b)
   systemCreator(systemName);
-
-
-
 }
 
 //gets the path to the exe and removes the exe name

@@ -10,7 +10,7 @@ Center systemReader(string s){
   vector <string> readPlanets;
   vector <string> readMoons;
   string extension = "./systems/"+ s + "/center";
-
+  cout<< extension<<endl;
   f.open(extension.c_str(), fstream::in);
   string lines;
   cout << "Loading Center\n";
