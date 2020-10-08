@@ -23,12 +23,20 @@ void editSystem(Center *c){
     cout << "Please be aware that these changes cannot be reversed\n";
     cout << "Enter b to go back\n";
 
-
+    string value;
     cin >> input;
     if(input != "b")
       cin >> bodyName;
+    if(input == "apoapsis"){
+      cin >> value;
+      cin.ignore(10000,'\n');
+      commandParser(c,value,input,bodyName);
+
+    }
+    else{
     cin.ignore(10000,'\n');
     commandParser(c,bodyName,input,"");
+    }
   }
 }
 
@@ -44,6 +52,7 @@ void planetDeleter(Center *c, string bodyName){
           c->orbiters[i].orbiters[k]=c->orbiters[i].orbiters[k+1];
         }
         c->orbiters[i].orbiters.pop_back();
+        return;
 
       }
     }
@@ -58,6 +67,7 @@ void planetDeleter(Center *c, string bodyName){
         c->orbiters[k]=c->orbiters[k+1];
       }
       c->orbiters.pop_back();
+      return;
     }
   }
   if(bodyName == c->name){
@@ -95,12 +105,17 @@ void focusView(Center *c, string bodyName){
     cout << "To modify values type the value name followed by the new value (Ex: diamerter 10)\n";
     cout << "You can also focus on another planet from here\n";
     cout << "Press \'b\' to go back\n";
+    string value;
     cin >> command;
-    if(command != "b")
+    if(command != "b"){
+
       cin >> object;
+      cin >> value;
+    }
+
     cin.ignore(10000,'\n');
 
-    commandParser(c,object,command,c->name);
+    commandParser(c,value,command,object);
   }
   else if(p.name.size() > 0){
     string command, object;
@@ -119,12 +134,17 @@ void focusView(Center *c, string bodyName){
     cout <<endl;
     cout << "To modify values type the value name followed by the new value (Ex: diamerter 10)\n";
     cout << "You can also focus on another planet from here\n";
+    string value;
     cin >> command;
-    if(command != "b")
+    if(command != "b"){
+
       cin >> object;
+      cin >> value;
+    }
+
     cin.ignore(10000,'\n');
 
-    commandParser(c,object,command,p.name);
+    commandParser(c,value,command,object);
 
   }
   //need to make sure people cant name moons and planets the same name!
@@ -137,12 +157,17 @@ void focusView(Center *c, string bodyName){
     cout << "Periapsis: "<<m.periapsis<<endl;
     cout << "To modify values type the value name followed by the new value (Ex: diamerter 10)\n";
     cout << "You can also focus on another planet from here\n";
+    string value;
     cin >> command;
-    if(command != "b")
+    if(command != "b"){
+
       cin >> object;
+      cin >> value;
+    }
+
     cin.ignore(10000,'\n');
 
-    commandParser(c,object,command,m.name);
+    commandParser(c,value,command,object);
   }
   else{
     cout << "Planet or moon not found! Press enter to continue.\n";
@@ -158,10 +183,13 @@ void commandParser(Center *c, string objectValue, string command, string objectN
   else if(command == "apoapsis" && objectName.size()  > 0){
     int planetIndex = c->findPlanetIndex(objectName);
     vector<int> moonIndex = c->findMoonIndex(objectName);
+    cout << c->name <<endl;
     if(objectName == c->name){
       cout << "Your central body does not have an apoapsis.\n";
       cout << "Press enter to continue.\n";
+
       cin.ignore();
+
       focusView(c,objectName);
     }
 
@@ -176,11 +204,11 @@ void commandParser(Center *c, string objectValue, string command, string objectN
       systemWriter(c);
       focusView(c,objectName);
     }
+    else{
+      cout << "That moon or planet does not exist.\n Press enter to continue.\n";
+      cin.ignore();
+    }
 
-  }
-  else if(command == "apoapsis" && objectName.size()  <= 0){
-    cout << "You must first focus on a planet to change its values.\n Press enter to continue.\n";
-    cin.ignore();
   }
   else if(command == "delete"){
     planetDeleter(c,objectValue);

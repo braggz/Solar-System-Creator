@@ -42,21 +42,19 @@ if(systems.size() != 0){
     if(command != "b")
       cin >> value;
     cin.ignore(10000,'\n');
-    while(!isInt(value) && command !="b"){
-      cin >> command;
-      if(command != "b")
-        cin >> value;
-      cin.ignore(10000,'\n');
+    if(!isInt(value) && command !="b"){
+      cout << "That is not a number!.\nPress Enter to continue.\n";
+      cin.ignore();
+      systems.clear();
+      loadSystem();
+      return;
     }
-    while(stoi(value) > systems.size() && command != "b" && !isInt(value)){
-      if(!isInt(value) && command !="b")
-        cout <<"That was not a number!\n";
-      else if(stoi(value) > systems.size() && command != "b")
-        cout << "That system does not exist please try again \nEnter b to go back to the menu.\n";
-      cin >> command;
-      if(command != "b")
-        cin >> value;
-      cin.ignore(10000,'\n');
+    if(stoi(value) > systems.size() && command != "b"){
+      cout << "That is not a valid system!\nPress Enter to continue.\n";
+      cin.ignore();
+      systems.clear();
+      loadSystem();
+      return;
     }
     if(command == "delete"){
       string selection;
