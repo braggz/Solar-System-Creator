@@ -6,37 +6,30 @@ using namespace std;
 void planetDeleter(Center *c, string bodyName);
 void focusView(Center *c, string body);
 void loadSystem();
-void commandParser(Center *c, string objectValue, string command, string objectName);
+void commandParser(Center *c,string command);
 
 void editSystem(Center *c){
   string input;
   string bodyName;
   c->sortByLowestDistance(c->orbiters);
+  c->printSystem();
+  c->printSystemTextArt();
+  cout<< "This is the edit interface.\n";
+  cout<< "Type delete \"Planet Name\" to delete a planet and its moons. (You cannot delete your central body.)\n";
+  cout<< "Or type focus \"Body Name\" to edit the variables of that body\n";
+  cout << "Please be aware that these changes cannot be reversed\n";
+  cout << "Enter b to go back\n";
   while (input != "b"){
 
 
-    c->printSystem();
-    c->printSystemTextArt();
-    cout<< "This is the edit interface.\n";
-    cout<< "Type delete \"Planet Name\" to delete a planet and its moons. (You cannot delete your central body.)\n";
-    cout<< "Or type focus \"Body Name\" to edit the variables of that body\n";
-    cout << "Please be aware that these changes cannot be reversed\n";
-    cout << "Enter b to go back\n";
+
 
     string value;
     cin >> input;
     if(input != "b")
-      cin >> bodyName;
-    if(input == "apoapsis"){
-      cin >> value;
-      cin.ignore(10000,'\n');
-      commandParser(c,value,input,bodyName);
+      commandParser(c,input);
 
-    }
-    else{
-    cin.ignore(10000,'\n');
-    commandParser(c,bodyName,input,"");
-    }
+
   }
 }
 
@@ -101,21 +94,7 @@ void focusView(Center *c, string bodyName){
         cout << c->orbiters[i].name <<", ";
 
     }
-    cout <<endl;
-    cout << "To modify values type the value name followed by the new value (Ex: diamerter 10)\n";
-    cout << "You can also focus on another planet from here\n";
-    cout << "Press \'b\' to go back\n";
-    string value;
-    cin >> command;
-    if(command != "b"){
 
-      cin >> object;
-      cin >> value;
-    }
-
-    cin.ignore(10000,'\n');
-
-    commandParser(c,value,command,object);
   }
   else if(p.name.size() > 0){
     string command, object;
@@ -131,20 +110,7 @@ void focusView(Center *c, string bodyName){
       else
         cout << p.orbiters[i].name <<", ";
       }
-    cout <<endl;
-    cout << "To modify values type the value name followed by the new value (Ex: diamerter 10)\n";
-    cout << "You can also focus on another planet from here\n";
-    string value;
-    cin >> command;
-    if(command != "b"){
 
-      cin >> object;
-      cin >> value;
-    }
-
-    cin.ignore(10000,'\n');
-
-    commandParser(c,value,command,object);
 
   }
   //need to make sure people cant name moons and planets the same name!
@@ -155,19 +121,7 @@ void focusView(Center *c, string bodyName){
     cout << "Diameter: " <<m.diameter <<endl;
     cout << "Apoapsis: " <<m.apoapsis <<endl;
     cout << "Periapsis: "<<m.periapsis<<endl;
-    cout << "To modify values type the value name followed by the new value (Ex: diamerter 10)\n";
-    cout << "You can also focus on another planet from here\n";
-    string value;
-    cin >> command;
-    if(command != "b"){
 
-      cin >> object;
-      cin >> value;
-    }
-
-    cin.ignore(10000,'\n');
-
-    commandParser(c,value,command,object);
   }
   else{
     cout << "Planet or moon not found! Press enter to continue.\n";
@@ -175,12 +129,17 @@ void focusView(Center *c, string bodyName){
   }
 }
 
-void commandParser(Center *c, string objectValue, string command, string objectName){
+void commandParser(Center *c, string command){
 
   if(command == "focus"){
+    string objectValue;
+    cin >> objectValue;
     focusView(c,objectValue);
   }
-  else if(command == "apoapsis" && objectName.size()  > 0){
+  else if(command == "apoapsis"){
+    string objectName, objectValue;
+    cin >> objectName;
+    cin >> objectValue;
     int planetIndex = c->findPlanetIndex(objectName);
     vector<int> moonIndex = c->findMoonIndex(objectName);
     cout << c->name <<endl;
@@ -211,7 +170,9 @@ void commandParser(Center *c, string objectValue, string command, string objectN
 
   }
   else if(command == "delete"){
-    planetDeleter(c,objectValue);
+    string objectName;
+    cin >> objectName;
+    planetDeleter(c,objectName);
     systemWriter(c);
   }
   else if (command != "b"){
