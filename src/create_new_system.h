@@ -19,7 +19,7 @@ void createNewSystem(){
   cout << "System Name: ";
   string input;
   cin >> input;
-  cin.ignore(10000,'\n');;
+  cin.ignore(10000,'\n');
 
   if(input == "b"){
     b = true;

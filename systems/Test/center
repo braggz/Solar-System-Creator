@@ -1,5 +1,7 @@
 System Name:Test
-Body Name:Bob
-Body Mass:435345
-Body Diameter:345354
-Orbiter 0:Earth
+Body Name:Sol
+Body Mass:1
+Body Diameter:1
+Orbiter 0:One
+Orbiter 1:Two
+Orbiter 2:Three

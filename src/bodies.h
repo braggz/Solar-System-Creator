@@ -197,5 +197,4 @@ class Center{
     }
     return index;
   }
-
 };

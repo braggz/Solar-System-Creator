@@ -7,6 +7,9 @@ void planetDeleter(Center *c, string bodyName);
 void focusView(Center *c, string body);
 void loadSystem();
 void commandParser(Center *c,string command);
+void setApoapsis(Center *c, string objectName, string objectValue);
+bool isDouble(string s);
+bool collisionDetection(Center *c,string name,double d);
 
 void editSystem(Center *c){
   string input;
@@ -14,13 +17,13 @@ void editSystem(Center *c){
   c->sortByLowestDistance(c->orbiters);
   c->printSystem();
   c->printSystemTextArt();
-  cout<< "This is the edit interface.\n";
-  cout<< "Type delete \"Planet Name\" to delete a planet and its moons. (You cannot delete your central body.)\n";
-  cout<< "Or type focus \"Body Name\" to edit the variables of that body\n";
-  cout << "Please be aware that these changes cannot be reversed\n";
-  cout << "Enter b to go back\n";
-  while (input != "b"){
 
+  while (input != "b"){
+    cout<< "This is the edit interface.\n";
+    cout<< "Type delete \"Planet Name\" to delete a planet and its moons. (You cannot delete your central body.)\n";
+    cout<< "Or type focus \"Body Name\" to edit the variables of that body\n";
+    cout << "Please be aware that these changes cannot be reversed\n";
+    cout << "Enter b to go back\n";
 
 
 
@@ -134,49 +137,77 @@ void commandParser(Center *c, string command){
   if(command == "focus"){
     string objectValue;
     cin >> objectValue;
+    cin.ignore(10000,'\n');
     focusView(c,objectValue);
   }
   else if(command == "apoapsis"){
     string objectName, objectValue;
     cin >> objectName;
     cin >> objectValue;
-    int planetIndex = c->findPlanetIndex(objectName);
-    vector<int> moonIndex = c->findMoonIndex(objectName);
-    cout << c->name <<endl;
-    if(objectName == c->name){
-      cout << "Your central body does not have an apoapsis.\n";
-      cout << "Press enter to continue.\n";
-
-      cin.ignore();
-
-      focusView(c,objectName);
-    }
-
-    else if(planetIndex != -1){
-      c->orbiters[planetIndex].apoapsis = stod(objectValue);
-      systemWriter(c);
-      focusView(c,objectName);
-    }
-
-    else if(moonIndex.size()>0){
-      c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].apoapsis = stod(objectValue);
-      systemWriter(c);
-      focusView(c,objectName);
-    }
-    else{
-      cout << "That moon or planet does not exist.\n Press enter to continue.\n";
-      cin.ignore();
-    }
-
+    cin.ignore(10000,'\n');
+    setApoapsis(c,objectName,objectValue);
   }
   else if(command == "delete"){
     string objectName;
     cin >> objectName;
+    cin.ignore(10000,'\n');
     planetDeleter(c,objectName);
     systemWriter(c);
   }
   else if (command != "b"){
     cout << "Command not recognized. Press enter to continue.\n";
+    cin.ignore();
+  }
+}
+
+void setApoapsis(Center *c, string objectName, string objectValue){
+
+//  cin.ignore(10000,'\n');
+  int planetIndex = c->findPlanetIndex(objectName);
+  vector<int> moonIndex = c->findMoonIndex(objectName);
+  cout << c->name <<endl;
+  if(objectName == c->name){
+    cout << "Your central body does not have an apoapsis.\n";
+    cout << "Press enter to continue.\n";
+
+    cin.ignore();
+
+    focusView(c,objectName);
+  }
+//Need to finish this
+  else if(planetIndex != -1){
+    if(isDouble(objectValue)){
+        if(stod(objectValue) > c->orbiters[planetIndex].periapsis){
+          if(!collisionDetection(c,objectName,stod(objectValue))){
+            c->orbiters[planetIndex].apoapsis = stod(objectValue);
+            systemWriter(c);
+            focusView(c,objectName);
+            return;
+          }
+          else{
+            cout << "There was a collision detected.\nPress enter to continue.\n";
+            cin.ignore();
+          }
+        }
+        else{
+          cout<<"Your apoapsis must be greater than your periapsis!\nPress enter to continue.\n";
+          cin.ignore();
+        }
+    }
+    else{
+      cout << "That was not a number!\nPress enter to continue\n";
+      cin.ignore();
+    }
+
+  }
+
+  else if(moonIndex.size()>0){
+    c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].apoapsis = stod(objectValue);
+    systemWriter(c);
+    focusView(c,objectName);
+  }
+  else{
+    cout << "That moon or planet does not exist.\n Press enter to continue.\n";
     cin.ignore();
   }
 }
