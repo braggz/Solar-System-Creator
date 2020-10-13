@@ -9,7 +9,9 @@ void loadSystem();
 void commandParser(Center *c,string command);
 void setApoapsis(Center *c, string objectName, string objectValue);
 bool isDouble(string s);
-bool collisionDetection(Center *c,string name,double d);
+bool collisionDetectionPlanets(Center *c,string name,double newVal,double diameter);
+void setPeriapsis(Center *c, string objectName, string objectValue);
+bool collisionDetectionMoons(Center *c,string name,double newVal, double diameter);
 
 void editSystem(Center *c){
   string input;
@@ -147,6 +149,13 @@ void commandParser(Center *c, string command){
     cin.ignore(10000,'\n');
     setApoapsis(c,objectName,objectValue);
   }
+  else if(command == "periapsis"){
+    string objectName, objectValue;
+    cin >> objectName;
+    cin >> objectValue;
+    cin.ignore(10000,'\n');
+    setPeriapsis(c,objectName,objectValue);
+  }
   else if(command == "delete"){
     string objectName;
     cin >> objectName;
@@ -178,7 +187,7 @@ void setApoapsis(Center *c, string objectName, string objectValue){
   else if(planetIndex != -1){
     if(isDouble(objectValue)){
         if(stod(objectValue) > c->orbiters[planetIndex].periapsis){
-          if(!collisionDetection(c,objectName,stod(objectValue))){
+          if(!collisionDetectionPlanets(c,objectName,stod(objectValue),c->orbiters[planetIndex].diameter)){
             c->orbiters[planetIndex].apoapsis = stod(objectValue);
             systemWriter(c);
             focusView(c,objectName);
@@ -202,9 +211,102 @@ void setApoapsis(Center *c, string objectName, string objectValue){
   }
 
   else if(moonIndex.size()>0){
-    c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].apoapsis = stod(objectValue);
-    systemWriter(c);
+    if(isDouble(objectValue)){
+        if(stod(objectValue) > c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].periapsis){
+          if(!collisionDetectionMoons(c,objectName,stod(objectValue),c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].diameter)){
+            c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].apoapsis = stod(objectValue);
+            systemWriter(c);
+            focusView(c,objectName);
+            return;
+          }
+          else{
+            cout << "There was a collision detected.\nPress enter to continue.\n";
+            cin.ignore();
+          }
+        }
+        else{
+          cout<<"Your apoapsis must be greater than your periapsis!\nPress enter to continue.\n";
+          cin.ignore();
+        }
+    }
+    else{
+      cout << "That was not a number!\nPress enter to continue\n";
+      cin.ignore();
+    }
+
+
+  }
+  else{
+    cout << "That moon or planet does not exist.\n Press enter to continue.\n";
+    cin.ignore();
+  }
+}
+
+void setPeriapsis(Center *c, string objectName, string objectValue){
+
+//  cin.ignore(10000,'\n');
+  int planetIndex = c->findPlanetIndex(objectName);
+  vector<int> moonIndex = c->findMoonIndex(objectName);
+  cout << c->name <<endl;
+  if(objectName == c->name){
+    cout << "Your central body does not have an apoapsis.\n";
+    cout << "Press enter to continue.\n";
+
+    cin.ignore();
+
     focusView(c,objectName);
+  }
+//Need to finish this
+  else if(planetIndex != -1){
+    if(isDouble(objectValue)){
+        if(stod(objectValue) < c->orbiters[planetIndex].apoapsis){
+          if(!collisionDetectionPlanets(c,objectName,stod(objectValue),c->orbiters[planetIndex].diameter)){
+            c->orbiters[planetIndex].periapsis = stod(objectValue);
+            systemWriter(c);
+            focusView(c,objectName);
+            return;
+          }
+          else{
+            cout << "There was a collision detected.\nPress enter to continue.\n";
+            cin.ignore();
+          }
+        }
+        else{
+          cout<<"Your periapsis must be less than your apoapsis!\nPress enter to continue.\n";
+          cin.ignore();
+        }
+    }
+    else{
+      cout << "That was not a number!\nPress enter to continue\n";
+      cin.ignore();
+    }
+
+  }
+
+  else if(moonIndex.size()>0){
+    if(isDouble(objectValue)){
+        if(stod(objectValue) < c->orbiters[moonIndex[1]].orbiters[moonIndex[1]].apoapsis){
+          if(!collisionDetectionMoons(c,objectName,stod(objectValue),c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].diameter)){
+            c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].apoapsis = stod(objectValue);
+            systemWriter(c);
+            focusView(c,objectName);
+            return;
+          }
+          else{
+            cout << "There was a collision detected.\nPress enter to continue.\n";
+            cin.ignore();
+          }
+        }
+        else{
+          cout<<"Your apoapsis must be greater than your periapsis!\nPress enter to continue.\n";
+          cin.ignore();
+        }
+    }
+    else{
+      cout << "That was not a number!\nPress enter to continue\n";
+      cin.ignore();
+    }
+
   }
   else{
     cout << "That moon or planet does not exist.\n Press enter to continue.\n";

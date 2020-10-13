@@ -1,7 +1,5 @@
 System Name:Test
 Body Name:Sol
-Body Mass:1
-Body Diameter:1
-Orbiter 0:One
-Orbiter 1:Two
-Orbiter 2:Three
+Body Mass:5
+Body Diameter:5
+Orbiter 0:Earth
