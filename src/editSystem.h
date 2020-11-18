@@ -12,6 +12,7 @@ bool isDouble(string s);
 bool collisionDetectionPlanets(Center *c,string name,double newVal,double diameter);
 void setPeriapsis(Center *c, string objectName, string objectValue);
 bool collisionDetectionMoons(Center *c,string name,double newVal, double diameter);
+void setMass(Center *c, string objectName, string objectValue);
 
 void editSystem(Center *c){
   string input;
@@ -163,6 +164,16 @@ void commandParser(Center *c, string command){
     planetDeleter(c,objectName);
     systemWriter(c);
   }
+  else if(command == "mass"){
+    string objectName,objectValue;
+    cin >> objectName;
+    cin >> objectValue;
+    cin.ignore(10000,'\n');
+    setMass(c,objectName,objectValue);
+    systemWriter(c);
+    focusView(c,objectName);
+
+  }
   else if (command != "b"){
     cout << "Command not recognized. Press enter to continue.\n";
     cin.ignore();
@@ -312,4 +323,28 @@ void setPeriapsis(Center *c, string objectName, string objectValue){
     cout << "That moon or planet does not exist.\n Press enter to continue.\n";
     cin.ignore();
   }
+}
+void setMass(Center *c, string objectName, string objectValue){
+  if(isDouble(objectValue)){
+    if(stod(objectValue) >= 0){
+      int planetIndex = c->findPlanetIndex(objectName);
+      vector<int> moonIndex = c->findMoonIndex(objectName);
+      if(c->name == objectName)
+        c->mass = stod(objectValue);
+      else if(planetIndex != -1){
+        c->orbiters[planetIndex].mass = stod(objectValue);
+      }
+      else if(moonIndex.size()>0){
+        c->orbiters[moonIndex[0]].orbiters[moonIndex[1]].mass = stod(objectValue);
+      }
+      else
+        cout << "Could find no body by that name\n";
+      }
+      else
+        cout << "The value must not be a negative number\n";
+    }
+    else
+      cout << "Please enter a number\n";
+
+
 }
